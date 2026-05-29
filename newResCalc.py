@@ -29,21 +29,26 @@ def calculate():
             setSeries(totalSeries)
         except:
             print("error")            
-            
+
+#set series value            
 def setSeries(value):
     resistance['series'] = value
     getSeries()
 
+#display calculated series value
 def getSeries():
     print(resistance["series"])
+    seriesValueLabel = tk.Label(root, text=f"Series Total: {resistance["series"]}")
+    seriesValueLabel.grid(row=5)
 #create 2 input boxes for each set up
 
-    #series
+#series
 seriesBox = tk.Entry(root)
 seriesBox.insert(0, "Series Values")
 seriesBox.grid(row=2, column=2, pady=20)
 seriesLabel = tk.Label(root, text="Series Values")
 seriesLabel.grid(row=2, column=1)
+
 #parallel
 parallelBox = tk.Entry(root)
 parallelBox.insert(0, "Parallel Values")
