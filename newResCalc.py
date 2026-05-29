@@ -4,10 +4,12 @@ import tkinter as tk
 #user should be able to input both types of set ups
 #resistance should be calculated as total
 
+
 root = tk.Tk()
 root.title("Resistor Calculator 2.0")
 #set minimum window size
 root.minsize(width=300, height=300)
+    
 
 #add instructions
 instruct = tk.Label(root, text="\nCalculate resistance below by inputting each value in their respected boxes.\nPlease seperate each value with a comma\n" )
@@ -15,6 +17,7 @@ instruct.grid(rowspan=2, columnspan=3)
 
 def calculate():
     seriesString = seriesBox.get()
+    parallelString = parallelBox.get()
     if seriesString:
         try:
             #create list based on comma delimiter
@@ -28,8 +31,35 @@ def calculate():
             #update total series resistance
             setSeries(totalSeries)
         except:
-            print("error")            
+            createError()
+    if parallelString:
+        try:
+            #create list based on comma delim
+            parallelValues = parallelString.split(",")
+            #change list from str to int
+            parallelValues = list(map(int, parallelValues))
+            #add parallel
+            totalParallel = 0
+            for x in parallelValues:
+                if x != 0:
+                    totalParallel += (1/x)
+            #inverse totalParallel
+            totalParallel = totalParallel**-1
+            setParallel(totalParallel)
+        except:
+            print("An error has occured.\n\nClosing App")
+            
 
+    
+
+#error message function ------row 6
+def createError():
+    errorLabel = tk.Label(root, text="An error has occured.\n\nClosing App")
+    errorLabel.grid(row=6, rowspan=2)
+    root.after(3000, lambda: root.destroy())
+    
+    
+    
 #set series value            
 def setSeries(value):
     resistance['series'] = value
@@ -40,8 +70,21 @@ def getSeries():
     print(resistance["series"])
     seriesValueLabel = tk.Label(root, text=f"Series Total: {resistance["series"]}")
     seriesValueLabel.grid(row=5)
-#create 2 input boxes for each set up
 
+#set parallel values
+def setParallel(value):
+    value = round(value, 4)
+    resistance['parallel'] = value
+    getParallel()
+
+#display calculated parallel value
+def getParallel():
+    print(resistance["parallel"])
+    parallelValueLabel = tk.Label(root, text=f"Parallel Total: {resistance['parallel']}")
+    parallelValueLabel.grid(row=6)
+
+
+#create 2 input boxes for each set up
 #series
 seriesBox = tk.Entry(root)
 seriesBox.insert(0, "Series Values")
